@@ -17,5 +17,6 @@ class TaskProvider with ChangeNotifier {
     tasks = await repository.getTasks();
     priorities = await repository.getTaskPriorities();
     Get.offAllNamed(RouteHelper.homeView);
+    notifyListeners();
   }
 }

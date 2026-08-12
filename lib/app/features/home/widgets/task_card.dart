@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_tasks_frontend/app/features/home/dialogs/sure_dialog/sure_dialog.dart';
+import 'package:my_tasks_frontend/app/models/task.dart';
+import 'package:my_tasks_frontend/app/models/task_priority.dart';
 
 class TaskCard extends StatelessWidget {
-  const TaskCard({super.key});
+  final Task task;
+  final List<TaskPriority> priorities;
+
+  const TaskCard(this.task, this.priorities, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,30 +19,41 @@ class TaskCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Checkbox(value: true, onChanged: (status) {}),
+            Checkbox(value: task.isComplete, onChanged: (status) {}),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Mi tarea',
+                    task.title,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Prioridad HIGH',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.titleSmall!.copyWith(color: Colors.red),
+                    task.priority == null
+                        ? 'Sin prioridad asignada'
+                        : 'Prioridad ${task.priority!.name}',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: task.priority == null
+                          ? null
+                          : task.priority!.order == 1
+                          ? Colors.red
+                          : task.priority!.order == 2
+                          ? Colors.orange
+                          : Colors.blue,
+                    ),
                   ),
                 ],
               ),
             ),
             IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-            IconButton(onPressed: () async {
-              showDialog(context: context, builder: (_) => SureDialog());
-            }, icon: Icon(Icons.delete)),
+            IconButton(
+              onPressed: () async {
+                showDialog(context: context, builder: (_) => SureDialog());
+              },
+              icon: Icon(Icons.delete),
+            ),
           ],
         ),
       ),

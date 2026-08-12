@@ -15,14 +15,12 @@ class _SureDialog extends State<SureDialog> {
       content: contentDialog(),
       actions: [
         TextButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
           child: const Text('Cancelar'),
         ),
         FilledButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           style: TextButton.styleFrom(backgroundColor: Colors.blueAccent),
           child: const Text('Borrar'),
         ),
