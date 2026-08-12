@@ -59,4 +59,13 @@ class ApiService {
       return null;
     }
   }
+
+  Future<bool> deleteTask(Task task) async {
+    try {
+      await dio.delete("/tasks/${task.id}");
+      return true;
+    } on Exception catch (_) {
+      return false;
+    }
+  }
 }

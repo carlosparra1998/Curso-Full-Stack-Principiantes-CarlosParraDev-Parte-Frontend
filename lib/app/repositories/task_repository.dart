@@ -22,4 +22,8 @@ class TaskRepository {
   Future<Task?> editTask(Task task) async {
     return await api.editTask(task);
   }
+
+  Future<bool> deleteTask(Task task) async {
+    return await api.deleteTask(task);
+  }
 }

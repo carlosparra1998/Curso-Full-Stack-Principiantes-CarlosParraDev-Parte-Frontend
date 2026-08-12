@@ -52,4 +52,12 @@ class TaskProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<bool> deleteTask(Task task) async{
+    final response = await repository.deleteTask(task);
+    if(!response) return false;
+    tasks.removeWhere((e) => e.id == task.id);
+    notifyListeners();
+    return true;
+  }
 }

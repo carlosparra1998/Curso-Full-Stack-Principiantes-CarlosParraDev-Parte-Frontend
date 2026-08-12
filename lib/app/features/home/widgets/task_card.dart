@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tasks_frontend/app/features/home/dialogs/create_or_edit_task_dialog/create_or_edit_task_dialog.dart';
+import 'package:my_tasks_frontend/app/features/home/dialogs/sure_dialog/sure_dialog.dart';
 import 'package:my_tasks_frontend/app/models/task.dart';
 import 'package:my_tasks_frontend/app/models/task_priority.dart';
 import 'package:my_tasks_frontend/app/providers/task_provider.dart';
@@ -68,7 +69,13 @@ class TaskCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: () async {
-                
+                bool? sure = await showDialog<bool?>(
+                  context: context,
+                  builder: (_) => SureDialog(),
+                );
+                if (sure ?? false) {
+                  context.read<TaskProvider>().deleteTask(task);
+                }
               },
               icon: Icon(Icons.delete),
             ),
