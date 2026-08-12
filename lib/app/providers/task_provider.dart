@@ -16,8 +16,8 @@ class TaskProvider with ChangeNotifier {
   Future<void> loadDependencies() async {
     tasks = await repository.getTasks();
     priorities = await repository.getTaskPriorities();
+    _orderTasks();
     Get.offAllNamed(RouteHelper.homeView);
-    notifyListeners();
   }
 
   Future<bool> createNewTask(Task task) async {
@@ -28,7 +28,7 @@ class TaskProvider with ChangeNotifier {
     }
 
     tasks.add(response);
-    notifyListeners();
+    _orderTasks();
     return true;
   }
 
@@ -39,7 +39,7 @@ class TaskProvider with ChangeNotifier {
     }
     tasks.removeWhere((e) => e.id == task.id);
     tasks.add(response);
-    notifyListeners();
+    _orderTasks();
     return true;
   }
 
@@ -49,15 +49,38 @@ class TaskProvider with ChangeNotifier {
     bool response = await editTask(task);
     if (!response) {
       task.isComplete = originalStatus;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
-  Future<bool> deleteTask(Task task) async{
+  Future<bool> deleteTask(Task task) async {
     final response = await repository.deleteTask(task);
-    if(!response) return false;
+    if (!response) return false;
     tasks.removeWhere((e) => e.id == task.id);
-    notifyListeners();
+    _orderTasks();
     return true;
+  }
+
+  void _orderTasks() {
+    tasks.sort((a, b) {
+      if (a.isComplete != b.isComplete) {
+        return a.isComplete ? 1 : -1;
+      }
+
+      if (a.priority == null && b.priority == null) {
+        return 0;
+      }
+
+      if (a.priority == null) {
+        return 1;
+      }
+
+      if (b.priority == null) {
+        return -1;
+      }
+
+      return a.priority!.order.compareTo(b.priority!.order);
+    });
+    notifyListeners();
   }
 }

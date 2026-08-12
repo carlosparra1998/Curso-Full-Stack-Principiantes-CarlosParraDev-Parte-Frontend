@@ -21,7 +21,7 @@ class Task {
         ? null
         : TaskPriority.fromJson(json['priority']);
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       'title': title,

@@ -7,7 +7,7 @@ class CreateOrEditTaskForm {
 
   TaskPriority? selectedPriority;
 
-  CreateOrEditTaskForm.init(Task? task){
+  CreateOrEditTaskForm.init(Task? task) {
     controller = TextEditingController(text: task?.title);
     selectedPriority = task?.priority;
   }
