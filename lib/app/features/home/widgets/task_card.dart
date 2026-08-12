@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:my_tasks_frontend/app/features/home/dialogs/sure_dialog/sure_dialog.dart';
+import 'package:my_tasks_frontend/app/features/home/dialogs/create_or_edit_task_dialog/create_or_edit_task_dialog.dart';
 import 'package:my_tasks_frontend/app/models/task.dart';
 import 'package:my_tasks_frontend/app/models/task_priority.dart';
+import 'package:my_tasks_frontend/app/providers/task_provider.dart';
+import 'package:provider/provider.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
   final List<TaskPriority> priorities;
-
   const TaskCard(this.task, this.priorities, {super.key});
 
   @override
@@ -19,7 +20,15 @@ class TaskCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            Checkbox(value: task.isComplete, onChanged: (status) {}),
+            Checkbox(
+              value: task.isComplete,
+              onChanged: (status) {
+                context.read<TaskProvider>().markOrDismarkCompletitionTask(
+                  task,
+                  status ?? false,
+                );
+              },
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
@@ -47,10 +56,19 @@ class TaskCard extends StatelessWidget {
                 ],
               ),
             ),
-            IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) =>
+                      CreateOrEditTaskDialog(priorities, editableTask: task),
+                );
+              },
+              icon: Icon(Icons.edit),
+            ),
             IconButton(
               onPressed: () async {
-                showDialog(context: context, builder: (_) => SureDialog());
+                
               },
               icon: Icon(Icons.delete),
             ),

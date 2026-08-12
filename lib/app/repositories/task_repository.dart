@@ -18,4 +18,8 @@ class TaskRepository {
   Future<Task?> createNewTask(Task task) async {
     return await api.createNewTask(task);
   }
+
+  Future<Task?> editTask(Task task) async {
+    return await api.editTask(task);
+  }
 }

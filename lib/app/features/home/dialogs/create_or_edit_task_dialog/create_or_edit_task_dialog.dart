@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:my_tasks_frontend/app/features/home/dialogs/create_or_edit_task_dialog/create_or_edit_task_controller.dart';
+import 'package:my_tasks_frontend/app/models/task.dart';
 import 'package:my_tasks_frontend/app/models/task_priority.dart';
 import 'package:provider/provider.dart';
 
+import 'create_or_edit_task_controller.dart';
+
 class CreateOrEditTaskDialog extends StatefulWidget {
+  final Task? editableTask;
   final List<TaskPriority> priorities;
-  const CreateOrEditTaskDialog(this.priorities, {super.key});
+  const CreateOrEditTaskDialog(this.priorities, {this.editableTask, super.key});
 
   @override
   State<CreateOrEditTaskDialog> createState() => _CreateOrEditTaskDialogState();
@@ -15,39 +18,44 @@ class _CreateOrEditTaskDialogState extends State<CreateOrEditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CreateOrEditTaskController(),
+      create: (context) => CreateOrEditTaskController(widget.editableTask),
       child: Consumer<CreateOrEditTaskController>(
         builder: (_, provider, _) {
           bool enableCreation = provider.form.controller.text.trim().isNotEmpty;
           return AlertDialog(
-          title: Text('Nueva tarea'),
-          content: contentDialog(provider),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancelar'),
-              style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
+            title: Text(
+              widget.editableTask == null ? 'Nueva tarea' : 'Editar tarea',
             ),
-            Opacity(
-              opacity: enableCreation ? 1 : .5,
-              child: FilledButton(
-                onPressed: () async {
-                  if(!enableCreation){
-                    return;
-                  }
-                  final response = await provider.createOrEditTask(context);
-                  if(response){
-                    Navigator.pop(context);
-                  }
+            content: contentDialog(provider),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
                 },
-                child: const Text('Crear'),
-                style: TextButton.styleFrom(backgroundColor: Colors.blueAccent),
+                style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
+                child: const Text('Cancelar'),
               ),
-            ),
-          ],
-        );
+              Opacity(
+                opacity: enableCreation ? 1 : .5,
+                child: FilledButton(
+                  onPressed: () async {
+                    if (!enableCreation) {
+                      return;
+                    }
+
+                    final response = await provider.createOrEditTask(context);
+                    if (response) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                  ),
+                  child: const Text('Crear'),
+                ),
+              ),
+            ],
+          );
         },
       ),
     );

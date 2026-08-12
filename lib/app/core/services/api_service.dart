@@ -46,4 +46,17 @@ class ApiService {
       return null;
     }
   }
+
+  Future<Task?> editTask(Task task) async {
+    try {
+      final response = await dio.put("/tasks/${task.id}", data: task.toJson());
+      if (response.data == null) {
+        return null;
+      }
+
+      return Task.fromJson(response.data);
+    } on Exception catch (_) {
+      return null;
+    }
+  }
 }

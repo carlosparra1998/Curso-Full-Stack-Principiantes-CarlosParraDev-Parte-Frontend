@@ -31,4 +31,25 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
     return true;
   }
+
+  Future<bool> editTask(Task task) async {
+    Task? response = await repository.editTask(task);
+    if (response == null) {
+      return false;
+    }
+    tasks.removeWhere((e) => e.id == task.id);
+    tasks.add(response);
+    notifyListeners();
+    return true;
+  }
+
+  void markOrDismarkCompletitionTask(Task task, bool status) async {
+    bool originalStatus = task.isComplete;
+    task.isComplete = status;
+    bool response = await editTask(task);
+    if (!response) {
+      task.isComplete = originalStatus;
+    }
+    notifyListeners();
+  }
 }
