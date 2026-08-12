@@ -28,6 +28,7 @@ class TaskProvider with ChangeNotifier {
     }
 
     tasks.add(response);
+    notifyListeners();
     return true;
   }
 }
