@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_frontend/app/models/task_priority.dart';
 
 class CreateOrEditTaskDialog extends StatefulWidget {
-  const CreateOrEditTaskDialog({super.key});
+  final List<TaskPriority> priorities;
+  const CreateOrEditTaskDialog(this.priorities, {super.key});
 
   @override
   State<CreateOrEditTaskDialog> createState() => _CreateOrEditTaskDialogState();
@@ -15,7 +17,9 @@ class _CreateOrEditTaskDialogState extends State<CreateOrEditTaskDialog> {
       content: contentDialog(),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           child: const Text('Cancelar'),
           style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
         ),
@@ -27,32 +31,36 @@ class _CreateOrEditTaskDialogState extends State<CreateOrEditTaskDialog> {
       ],
     );
   }
-}
 
-Widget contentDialog() {
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      TextField(
-        decoration: const InputDecoration(
-          labelText: 'Título de la tarea',
-          border: OutlineInputBorder(),
+  Widget contentDialog() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          decoration: const InputDecoration(
+            labelText: 'Título de la tarea',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (value) {},
         ),
-        onChanged: (value) {},
-      ),
-      const SizedBox(height: 16),
-      DropdownButtonFormField<String>(
-        value: 'HIGH',
-        items: [
-          DropdownMenuItem(child: const Text('HIGH'), value: 'HIGH'),
-          DropdownMenuItem(child: const Text('LOW'), value: 'LOW'),
-        ],
-        decoration: InputDecoration(
-          labelText: 'Prioridad de la tarea',
-          border: OutlineInputBorder(),
+        const SizedBox(height: 16),
+        DropdownButtonFormField<TaskPriority>(
+          value: null,
+          items: widget.priorities
+              .map(
+                (priority) => DropdownMenuItem(
+                  value: priority,
+                  child: Text(priority.name),
+                ),
+              )
+              .toList(),
+          decoration: InputDecoration(
+            labelText: 'Prioridad de la tarea',
+            border: OutlineInputBorder(),
+          ),
+          onChanged: (priority) {},
         ),
-        onChanged: (priority) {},
-      ),
-    ],
-  );
+      ],
+    );
+  }
 }

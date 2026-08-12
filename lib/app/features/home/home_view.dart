@@ -24,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (_) => CreateOrEditTaskDialog(),
+              builder: (_) => CreateOrEditTaskDialog(provider.priorities),
             );
           },
           backgroundColor: Colors.blueAccent,

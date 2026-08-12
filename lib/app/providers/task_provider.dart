@@ -19,4 +19,15 @@ class TaskProvider with ChangeNotifier {
     Get.offAllNamed(RouteHelper.homeView);
     notifyListeners();
   }
+
+  Future<bool> createNewTask(Task task) async {
+    Task? response = await repository.createNewTask(task);
+
+    if (response == null) {
+      return false;
+    }
+
+    tasks.add(response);
+    return true;
+  }
 }

@@ -15,7 +15,9 @@ class _SureDialog extends State<SureDialog> {
       content: contentDialog(),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           style: TextButton.styleFrom(foregroundColor: Colors.blueAccent),
           child: const Text('Cancelar'),
         ),

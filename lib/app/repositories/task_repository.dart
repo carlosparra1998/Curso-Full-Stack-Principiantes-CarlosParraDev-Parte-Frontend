@@ -14,4 +14,8 @@ class TaskRepository {
   Future<List<TaskPriority>> getTaskPriorities() async {
     return await api.getTaskPriorities();
   }
+
+  Future<Task?> createNewTask(Task task) async {
+    return await api.createNewTask(task);
+  }
 }

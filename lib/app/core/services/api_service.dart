@@ -33,4 +33,17 @@ class ApiService {
       return [];
     }
   }
+
+  Future<Task?> createNewTask(Task task) async {
+    try {
+      final response = await dio.post("/tasks/", data: task.toJson());
+      if (response.data == null) {
+        return null;
+      }
+
+      return Task.fromJson(response.data);
+    } on Exception catch (_) {
+      return null;
+    }
+  }
 }
