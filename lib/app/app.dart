@@ -10,7 +10,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My Tasks App',
-      initialRoute: RouteHelper.homeView, //TODO
+      initialRoute: RouteHelper.splashView,
       getPages: RouteHelper.routes,
     );
   }
