@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_frontend/app/features/home/dialogs/sure_dialog/sure_dialog.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({super.key});
@@ -34,7 +35,9 @@ class TaskCard extends StatelessWidget {
               ),
             ),
             IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-            IconButton(onPressed: () async {}, icon: Icon(Icons.delete)),
+            IconButton(onPressed: () async {
+              showDialog(context: context, builder: (_) => SureDialog());
+            }, icon: Icon(Icons.delete)),
           ],
         ),
       ),

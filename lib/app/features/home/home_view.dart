@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_frontend/app/features/home/dialogs/create_or_edit_task_dialog/create_or_edit_task_dialog.dart';
 import 'package:my_tasks_frontend/app/features/home/widgets/task_card.dart';
 
 class HomeView extends StatefulWidget {
@@ -17,7 +18,12 @@ class _HomeViewState extends State<HomeView> {
         backgroundColor: Colors.blueAccent,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (_) => CreateOrEditTaskDialog(),
+          );
+        },
         backgroundColor: Colors.blueAccent,
         child: Icon(Icons.add, color: Colors.white),
       ),
